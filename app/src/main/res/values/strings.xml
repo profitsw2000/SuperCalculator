@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">SuperCalculator</string>
+    <string name="enter_field_text">0</string>
+    <string name="button_zero">0</string>
+    <string name="button_one">1</string>
+    <string name="button_two">2</string>
+    <string name="button_three">3</string>
+    <string name="button_four">4</string>
+    <string name="button_mc">MC</string>
+    <string name="button_mr">MR</string>
+    <string name="button_ms">MS</string>
+    <string name="button_mplus">M+</string>
+    <string name="button_mminus">M-</string>
+    <string name="button_ce">CE</string>
+    <string name="button_backspace"><![CDATA[<--]]></string>
+    <string name="button_c">C</string>
+    <string name="button_7">7</string>
+    <string name="button_8">8</string>
+    <string name="button_9">9</string>
+    <string name="button_percent">%</string>
+    <string name="button_5">5</string>
+    <string name="button_6">6</string>
+    <string name="button_multiple">*</string>
+    <string name="button_minus">-</string>
+    <string name="button_plus">+</string>
+    <string name="button_1_x">1/x</string>
+    <string name="button_plus_minus">±</string>
+    <string name="button_sq_root">√</string>
+    <string name="button_divide">/</string>
+    <string name="button_equal">=</string>
+    <string name="button_point">,</string>
 </resources>
