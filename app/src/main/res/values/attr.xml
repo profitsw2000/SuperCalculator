@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="enterFieldBackgroundColor" format="color"/>
+    <attr name="digitButtonBackgroundColor" format="color"/>
+    <attr name="operationButtonBackgroundColor" format="color"/>
+    <attr name="buttonTextStrokeColor" format="color"/>
+    <attr name="clickedButtonColor" format="color"/>
+</resources>
