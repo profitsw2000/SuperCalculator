@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/backgroundImage"
+        android:alpha="0.2"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/formula"/>
+
     <include
         android:id="@+id/keypad"
         layout="@layout/keypad"

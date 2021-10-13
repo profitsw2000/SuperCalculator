@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <TextView
         android:id="@+id/enter_field"
         android:layout_width="0dp"
@@ -13,7 +12,7 @@
         android:gravity="bottom|end"
         android:lines="2"
         android:text="@string/enter_field_text"
-        android:textColor="@color/black"
+        android:textColor="?buttonTextStrokeColor"
         android:textSize="32sp"
         app:layout_constraintBottom_toTopOf="@id/top_guideline"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -631,7 +630,7 @@
         android:textColor="?buttonTextStrokeColor"
         app:strokeColor="?buttonTextStrokeColor"
         app:strokeWidth="1dp"
-        android:backgroundTint="?operationButtonBackgroundColor"
+        android:backgroundTint="?digitButtonBackgroundColor"
         app:rippleColor="?clickedButtonColor"
         app:layout_constraintBottom_toBottomOf="@id/bottom_guideline"
         app:layout_constraintEnd_toStartOf="@id/button_plus"
