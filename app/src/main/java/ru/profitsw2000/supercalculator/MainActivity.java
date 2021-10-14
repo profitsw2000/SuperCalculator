@@ -3,9 +3,14 @@ package ru.profitsw2000.supercalculator;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "LifeCycle"    ;
     private final static String CALC = "Calculator";
+    private final static String SUPERCALCULATOR_MODE = "CurrentMode"   ;
+    private final static String MODE = "SetMode"   ;
 
     private Button one  ;
     private Button two;
@@ -51,10 +58,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getAppTheme();
         setContentView(R.layout.activity_main);
         calculator = new Calculator()   ;
         findViews();
         buttonsListen();
+        operationButtonsListen();
+    }
+
+    private void getAppTheme() {
+
+        Context context = getApplicationContext() ;
+        SharedPreferences settings = getSharedPreferences(SUPERCALCULATOR_MODE, Context.MODE_PRIVATE);
+        String mode = settings.getString(MODE, "day_mode");
+
+        switch (mode) {
+            case "day_mode":
+                setTheme(R.style.Theme_SuperCalculator);
+                break;
+            case "night_mode":
+                setTheme(R.style.Theme_SuperCalculatorNight);
+                break;
+        }
+    }
+
+    private void saveAppTheme(String currentMode) {
+
+        Context context = getApplicationContext() ;
+        SharedPreferences settings = getSharedPreferences(SUPERCALCULATOR_MODE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(MODE, currentMode);
+        editor.apply();
     }
 
     @Override
@@ -68,6 +102,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(CALC, calculator);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId()   ;
+        Log.d(TAG, Integer.toString(id))    ;
+
+        switch (id){
+            case R.id.day_mode:
+                saveAppTheme("day_mode");
+                recreate();
+                break;
+            case R.id.night_mode:
+                saveAppTheme("night_mode");
+                recreate();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void findViews(){
@@ -118,12 +176,43 @@ public class MainActivity extends AppCompatActivity {
         setListener(point);
     }
 
+    private void operationButtonsListen() {
+        setoperationButtonListener(mc);
+        setoperationButtonListener(mr);
+        setoperationButtonListener(ms);
+        setoperationButtonListener(mplus);
+        setoperationButtonListener(mminus);
+        setoperationButtonListener(backspace);
+        setoperationButtonListener(ce);
+        setoperationButtonListener(clear);
+        setoperationButtonListener(plusminus);
+        setoperationButtonListener(sqrt);
+        setoperationButtonListener(divide);
+        setoperationButtonListener(percent);
+        setoperationButtonListener(multiply);
+        setoperationButtonListener(invert);
+        setoperationButtonListener(minus);
+        setoperationButtonListener(plus);
+        setoperationButtonListener(equal);
+    }
+
     private void setListener (Button button)
     {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calculator.getDigitButton(button.getText().toString());
+                enter_field.setText(calculator.getOutputText());
+            }
+        });
+    }
+
+    private void setoperationButtonListener (Button button)
+    {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculator.getOperationButton(button.getText().toString());
                 enter_field.setText(calculator.getOutputText());
             }
         });
