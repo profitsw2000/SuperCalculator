@@ -110,9 +110,11 @@ public class Calculator implements Parcelable {
                 break   ;
 
             case BACKSPACE:
+                eraseLastDigit();
                 break   ;
 
             case CLEAR_E:
+                clearSecondArgument();
                 break   ;
 
             case CLEAR:
@@ -120,9 +122,11 @@ public class Calculator implements Parcelable {
                 break   ;
 
             case PLUSMINUS:
+                invertSignOfArgument();
                 break   ;
 
             case SQRT:
+                squareRootArgument();
                 break   ;
 
             case DIVIDE:
@@ -130,6 +134,7 @@ public class Calculator implements Parcelable {
                 break   ;
 
             case PERCENT:
+                setPercentage();
                 break   ;
 
             case MULTIPLE:
@@ -137,6 +142,7 @@ public class Calculator implements Parcelable {
                 break   ;
 
             case INVERT:
+                reciprocArgument();
                 break   ;
 
             case MINUS:
@@ -152,65 +158,6 @@ public class Calculator implements Parcelable {
                 break   ;
         }
     }
-
-/*    private void minusOperation() {
-        String string1, string2  ;
-        double temp ;
-
-        operation = Operation.MINUS  ;
-
-        if (!operationPressed) {
-            ///EQULIZE!!!!!!!!!!!!!
-            string1 = getPartOfOutputString(true)   ;
-            string2 = getPartOfOutputString(false)  ;
-
-            temp = Double.valueOf(string2.replace(',','.'))  ;
-
-            if (string1.equalsIgnoreCase("")) tempMemory = temp ;
-            else tempMemory -= temp  ;
-
-            if (!String.valueOf(tempMemory).substring(String.valueOf(tempMemory).indexOf(".") + 1).equalsIgnoreCase("0")){
-                outputText = string1 + string2 + "-" + "\n" + String.valueOf(tempMemory).replace('.', ',')  ;
-            }
-            else {
-                outputText = string1 + string2 + "-" + "\n" + String.valueOf(tempMemory).substring(0, String.valueOf(tempMemory).indexOf(".")) ;
-            }
-            operationPressed = true ;
-            operation = Operation.MINUS  ;
-        }
-        else {
-            operation = Operation.MINUS  ;
-            setSignAtEndOfUpString("-");
-        }
-
-    }
-
-    private void addOperation() {
-        String string1, string2  ;
-        double temp ;
-
-        if (!operationPressed) {
-            ///EQULIZE!!!!!!!!!!!!!
-            string1 = getPartOfOutputString(true)   ;
-            string2 = getPartOfOutputString(false)  ;
-
-            temp = Double.valueOf(string2.replace(',','.'))  ;
-            tempMemory += temp  ;
-
-            if (!String.valueOf(tempMemory).substring(String.valueOf(tempMemory).indexOf(".") + 1).equalsIgnoreCase("0")){
-                outputText = string1 + string2 + "+" + "\n" + String.valueOf(tempMemory).replace('.', ',')  ;
-            }
-            else {
-                outputText = string1 + string2 + "+" + "\n" + String.valueOf(tempMemory).substring(0, String.valueOf(tempMemory).indexOf(".")) ;
-            }
-            operationPressed = true ;
-            operation = Operation.PLUS  ;
-        }
-        else {
-            operation = Operation.PLUS  ;
-            setSignAtEndOfUpString("+");
-        }
-    }*/
 
     private void executeOperation(Operation currentOperation, String sign) {
         String string1, string2 ;
@@ -243,21 +190,6 @@ public class Calculator implements Parcelable {
         }
     }
 
-    private void resultOperation(){
-        String string1 = getPartOfOutputString(false)   ;
-
-        tempMemory = computeNumber(operation, tempMemory, Double.valueOf(string1.replace(",","."))) ;
-
-        if (!String.valueOf(tempMemory).substring(String.valueOf(tempMemory).indexOf(".") + 1).equalsIgnoreCase("0")){
-            outputText = String.valueOf(tempMemory).replace('.', ',')  ;
-        }
-        else {
-            outputText = String.valueOf(tempMemory).substring(0, String.valueOf(tempMemory).indexOf(".")) ;
-        }
-
-        this.operationPressed = false   ;
-        this.operation = Operation.NONE ;
-    }
 
     private double computeNumber (Operation operation, double variable1, double variable2) {
         double result = 0   ;
@@ -286,6 +218,118 @@ public class Calculator implements Parcelable {
         return result   ;
     }
 
+    private void resultOperation(){
+        String string1 = getPartOfOutputString(false)   ;
+
+        tempMemory = computeNumber(operation, tempMemory, Double.valueOf(string1.replace(",","."))) ;
+
+        if (!String.valueOf(tempMemory).substring(String.valueOf(tempMemory).indexOf(".") + 1).equalsIgnoreCase("0")){
+            outputText = String.valueOf(tempMemory).replace('.', ',')  ;
+        }
+        else {
+            outputText = String.valueOf(tempMemory).substring(0, String.valueOf(tempMemory).indexOf(".")) ;
+        }
+
+        this.operationPressed = false   ;
+        this.operation = Operation.NONE ;
+    }
+
+    private void squareRootArgument () {
+        String tempString1, tempString2   ;
+        double tempArgument ;
+
+        tempString1 = getPartOfOutputString(true)   ;
+        tempString2 = getPartOfOutputString(false)  ;
+
+        tempArgument = Double.valueOf(tempString2.replace(',','.'))  ;
+
+        if (tempArgument >= 0)
+        {
+            tempArgument = Math.sqrt(tempArgument) ;
+            if (!String.valueOf(tempArgument).substring(String.valueOf(tempArgument).indexOf(".") + 1).equalsIgnoreCase("0")) {
+                outputText = tempString1 + "sqrt(" + tempString2 + ")" + "\n" + String.valueOf(tempArgument).replace('.', ',');
+            }
+            else {
+                outputText = tempString1 + "sqrt(" + tempString2 + ")" + "\n" + String.valueOf(tempArgument).substring(0, String.valueOf(tempArgument).indexOf(".")) ;
+            }
+        }
+        else {
+            outputText = tempString1 + "sqrt(" + tempString2 + ")" + "\n" + "Недопустимый ввод"    ;
+        }
+    }
+
+    private void reciprocArgument() {
+        String tempString1, tempString2   ;
+        double tempArgument ;
+
+        tempString1 = getPartOfOutputString(true)   ;
+        tempString2 = getPartOfOutputString(false)  ;
+
+        tempArgument = Double.valueOf(tempString2.replace(',','.'))  ;
+
+        if (tempArgument != 0) {
+            tempArgument = 1/tempArgument   ;
+            if (!String.valueOf(tempArgument).substring(String.valueOf(tempArgument).indexOf(".") + 1).equalsIgnoreCase("0")) {
+                outputText = tempString1 + "reciproc(" + tempString2 + ")" + "\n" + String.valueOf(tempArgument).replace('.', ',');
+            }
+            else {
+                outputText = tempString1 + "reciproc(" + tempString2 + ")" + "\n" + String.valueOf(tempArgument).substring(0, String.valueOf(tempArgument).indexOf(".")) ;
+            }
+        }
+        else outputText = tempString1 + "reciproc(" + tempString2 + ")" + "\n" + "Недопустимый ввод"    ;
+    }
+
+    private void setPercentage() {
+        String tempString1, tempString2   ;
+        double tempArgument ;
+
+        tempString1 = getPartOfOutputString(true)   ;
+        tempString2 = getPartOfOutputString(false)  ;
+
+        tempArgument = Double.valueOf(tempString2.replace(',','.'))  ;
+        tempArgument = (tempMemory/100)*tempArgument    ;
+
+        if (!String.valueOf(tempArgument).substring(String.valueOf(tempArgument).indexOf(".") + 1).equalsIgnoreCase("0")) {
+            tempString2 = String.valueOf(tempArgument).replace('.', ',');
+        }
+        else {
+            tempString2 = String.valueOf(tempArgument).substring(0, String.valueOf(tempArgument).indexOf(".")) ;
+        }
+
+        outputText = tempString1 + tempString2 + "\n" + tempString2 ;
+    }
+
+    private void invertSignOfArgument() {
+        String tempString1, tempString2   ;
+
+        tempString1 = getPartOfOutputString(true)   ;
+        tempString2 = getPartOfOutputString(false)  ;
+
+        if (!tempString2.equalsIgnoreCase("0")) {
+            if (tempString2.charAt(0) == '-') tempString2 = tempString2.substring(1);
+            else tempString2 = "-" + tempString2    ;
+        }
+        else {
+            tempString2 = "0"   ;
+        }
+        outputText = tempString1 + "\n" + tempString2 ;
+    }
+
+    private void eraseLastDigit() {
+        String tempString1, tempString2   ;
+
+        tempString1 = getPartOfOutputString(true)   ;
+        tempString2 = getPartOfOutputString(false)  ;
+
+        if (!tempString2.equalsIgnoreCase("0") && tempString2.length() > 1 && !(tempString2.indexOf("-") >= 0 && tempString2.length() < 3)) {
+            tempString2 = tempString2.substring(0,(tempString2.length() - 1));
+        }
+        else {
+            tempString2 = "0"   ;
+        }
+        outputText = tempString1 + "\n" + tempString2 ;
+    }
+
     private void clearAll() {
         outputText = "0"    ;
         var = 0.0   ;
@@ -293,6 +337,13 @@ public class Calculator implements Parcelable {
         var2 = 0.0  ;
         tempMemory = 0.0    ;
         operation = Operation.NONE  ;
+    }
+
+    private void clearSecondArgument() {
+        String tempString   ;
+
+        tempString = getPartOfOutputString(true)   ;
+        outputText = tempString + "\n" + "0"   ;
     }
 
     private String getPartOfOutputString(boolean upString) {
